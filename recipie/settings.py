@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # My apps
     'accounts',
     'gqlapi',
+    'culinary',
 ]
 
 MIDDLEWARE = [

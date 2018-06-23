@@ -2,7 +2,7 @@ import graphene
 
 from graphql_jwt.decorators import login_required
 
-from gqlapi.types import UserType, UserModel
+from gqlapi.types import UserType, UserModel, Recipe, RecipeType
 
 
 class UserQuery(graphene.ObjectType):
@@ -30,10 +30,29 @@ class UserQuery(graphene.ObjectType):
 
         raise Exception("User matching query does not exist.")
 
-    @login_required
+    # @login_required
     def resolve_users(self, info, **kwargs):
         return UserModel.objects.all()
 
 
-class RootQuery(UserQuery):
+class RecipeQuery(graphene.ObjectType):
+    recipes = graphene.List(
+        RecipeType,
+        user_id=graphene.ID(),
+        user_email=graphene.String())
+
+    def resolve_recipes(self, info, **kwargs):
+        user_id = kwargs.get('user_id')
+        user_email = kwargs.get('user_email')
+
+        if user_id is not None:
+            return Recipe.objects.filter(user=user_id)
+
+        if user_email is not None:
+            return Recipe.objects.filter(user__email=user_email)
+
+        raise Exception("User id or user email are needed")
+
+
+class RootQuery(UserQuery, RecipeQuery):
     pass
