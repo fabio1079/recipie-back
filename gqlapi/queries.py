@@ -30,7 +30,7 @@ class UserQuery(graphene.ObjectType):
 
         raise Exception("User matching query does not exist.")
 
-    # @login_required
+    @login_required
     def resolve_users(self, info, **kwargs):
         return UserModel.objects.all()
 
@@ -44,12 +44,13 @@ class RecipeQuery(graphene.ObjectType):
     def resolve_recipes(self, info, **kwargs):
         user_id = kwargs.get('user_id')
         user_email = kwargs.get('user_email')
+        query = Recipe.objects.all().select_related('user')
 
         if user_id is not None:
-            return Recipe.objects.filter(user=user_id)
+            return query.filter(user=user_id)
 
         if user_email is not None:
-            return Recipe.objects.filter(user__email=user_email)
+            return query.filter(user__email=user_email)
 
         raise Exception("User id or user email are needed")
 
