@@ -15,4 +15,5 @@ test:
   stage: test
   script:
     - docker-compose -f compose/test/docker-compose.test.yml build
-    - docker-compose -f compose/test/docker-compose.test.yml up
+    - docker-compose -f compose/test/docker-compose.test.yml run test coverage run --source='.' manage.py test --keepdb
+    - docker-compose -f compose/test/docker-compose.test.yml run test coverage report
