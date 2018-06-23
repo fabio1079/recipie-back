@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,10 +76,21 @@ WSGI_APPLICATION = 'recipie.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
+        'TEST': {
+            # in-memory sqlite for tests
+            'ENGINE': 'django.db.backends.sqlite3',
+        }
     }
 }
+
+# use --keepdb to skip re-creating the db
+if 'test' in sys.argv and 'keepdb' in sys.argv:
+    DATABASES['default']['TEST']['NAME'] = '/dev/shm/recipie.test.db.sqlite3'
 
 
 # Password validation
