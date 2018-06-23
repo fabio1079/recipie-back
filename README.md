@@ -1,5 +1,14 @@
 # ReciPie
 
+| Branch       | Status         |
+|:------------:|:--------------:|
+| Master       | [![pipeline status](https://gitlab.com/recipie/recipie-back/badges/master/pipeline.svg)](https://gitlab.com/recipie/recipie-back) |
+| Master       | [![coverage status](https://gitlab.com/recipie/recipie-back/badges/master/coverage.svg)](https://gitlab.com/recipie/recipie-back) |
+| Develop      | [![pipeline status](https://gitlab.com/recipie/recipie-back/badges/develop/pipeline.svg)](https://gitlab.com/recipie/recipie-back) |
+| Develop      | [![coverage status](https://gitlab.com/recipie/recipie-back/badges/develop/coverage.svg)](https://gitlab.com/recipie/recipie-back) |
+
+---
+
 This is a simple recipes app for the porpose of learning:
 * django.
 * graphql.
