@@ -19,10 +19,6 @@ class UserQuery(graphene.ObjectType):
 
     @login_required
     def resolve_user(self, info, **kwargs):
-        if not info.context.user.is_staff:
-            raise Exception(
-                "You do not have permission to perform this action")
-
         id = kwargs.get('id')
         email = kwargs.get('email')
 
@@ -36,11 +32,7 @@ class UserQuery(graphene.ObjectType):
 
     @login_required
     def resolve_users(self, info, **kwargs):
-        if info.context.user.is_staff:
-            return UserModel.objects.all()
-        else:
-            raise Exception(
-                "You do not have permission to perform this action")
+        return UserModel.objects.all()
 
 
 class RootQuery(UserQuery):

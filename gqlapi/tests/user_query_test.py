@@ -41,63 +41,63 @@ class UserQueryTestCase(TestCase):
         self.assertEqual(json['data']['me']['id'], str(self.user1.id))
         self.assertEqual(json['data']['me']['email'], self.user1.email)
 
-    def test_only_admin_can_get_users(self):
-        """Only an admin can get all users"""
-        c = Client()
-        query = """
-            query {
-                users {
-                    id
-                    email
-                }
-            }
-        """
+    # def test_only_admin_can_get_users(self):
+    #     """Only an admin can get all users"""
+    #     c = Client()
+    #     query = """
+    #         query {
+    #             users {
+    #                 id
+    #                 email
+    #             }
+    #         }
+    #     """
 
-        token = get_token(self.user1)
-        response = c.post('/graphql/', {'query': query},
-                          **{
-                              'HTTP_AUTHORIZATION': 'JWT %s' % token, })
+    #     token = get_token(self.user1)
+    #     response = c.post('/graphql/', {'query': query},
+    #                       **{
+    #                           'HTTP_AUTHORIZATION': 'JWT %s' % token, })
 
-        expected_message = 'You do not have permission to perform this action'
-        self.assertEqual(response.json()['errors']
-                         [0]['message'], expected_message)
+    #     expected_message = 'You do not have permission to perform this action'
+    #     self.assertEqual(response.json()['errors']
+    #                      [0]['message'], expected_message)
 
-        token = get_token(self.admin_user)
-        response = c.post('/graphql/', {'query': query},
-                          **{
-                              'HTTP_AUTHORIZATION': 'JWT %s' % token, })
+    #     token = get_token(self.admin_user)
+    #     response = c.post('/graphql/', {'query': query},
+    #                       **{
+    #                           'HTTP_AUTHORIZATION': 'JWT %s' % token, })
 
-        json = response.json()
-        self.assertEqual(len(json['data']['users']), 2)
+    #     json = response.json()
+    #     self.assertEqual(len(json['data']['users']), 2)
 
-    def test_only_admin_can_get_user(self):
-        """Only an admin can get a user data"""
-        c = Client()
-        query = """
-            query {
-                user(id: %d) {
-                    id
-                    email
-                }
-            }
-        """ % self.user1.id
+    # def test_only_admin_can_get_user(self):
+    #     """Only an admin can get a user data"""
+    #     c = Client()
+    #     query = """
+    #         query {
+    #             user(id: %d) {
+    #                 id
+    #                 email
+    #             }
+    #         }
+    #     """ % self.user1.id
 
-        token = get_token(self.user1)
-        response = c.post('/graphql/', {'query': query},
-                          **{
-                              'HTTP_AUTHORIZATION': 'JWT %s' % token, })
+    #     token = get_token(self.user1)
+    #     response = c.post('/graphql/', {'query': query},
+    #                       **{
+    #                           'HTTP_AUTHORIZATION': 'JWT %s' % token, })
 
-        expected_message = 'You do not have permission to perform this action'
-        self.assertEqual(response.json()['errors']
-                         [0]['message'], expected_message)
+    #     expected_message = 'You do not have permission to perform this action'
+    #     self.assertEqual(response.json()['errors']
+    #                      [0]['message'], expected_message)
 
-        token = get_token(self.admin_user)
-        response = c.post('/graphql/', {'query': query},
-                          **{
-                              'HTTP_AUTHORIZATION': 'JWT %s' % token, })
+    #     token = get_token(self.admin_user)
+    #     response = c.post('/graphql/', {'query': query},
+    #                       **{
+    #                           'HTTP_AUTHORIZATION': 'JWT %s' % token, })
 
-        json = response.json()
-        self.assertEqual(json['data']['user']['id'], str(self.user1.id))
+    #     json = response.json()
+    #     self.assertEqual(json['data']['user']['id'], str(self.user1.id))
 
     def test_get_user_by_email(self):
         """Only get user by its email"""
