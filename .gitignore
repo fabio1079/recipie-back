@@ -1,4 +1,7 @@
 db.sqlite3
-recipie/__pycache__/
+__pycache__/
+*.pyc
+*.swp
 .vscode/
+.venv/
 

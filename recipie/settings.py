@@ -78,7 +78,12 @@ WSGI_APPLICATION = 'recipie.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': {}
+}
+ENV = os.environ.get('MODE_ENVIROMENT')
+
+if ENV == 'dev':
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
@@ -89,11 +94,15 @@ DATABASES = {
             'ENGINE': 'django.db.backends.sqlite3',
         }
     }
-}
 
-# use --keepdb to skip re-creating the db
-if 'test' in sys.argv and 'keepdb' in sys.argv:
-    DATABASES['default']['TEST']['NAME'] = '/dev/shm/recipie.test.db.sqlite3'
+if ENV == 'test':
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+    }
+
+    # use --keepdb to skip re-creating the db
+    if 'test' in sys.argv and 'keepdb' in sys.argv:
+        DATABASES['default']['TEST']['NAME'] = '/dev/shm/recipie.test.db.sqlite3'
 
 
 # Password validation

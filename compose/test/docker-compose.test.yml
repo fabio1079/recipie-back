@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  test:
+    build:
+      context: ../../
+      dockerfile: ./compose/test/Dockerfile
+    command: python3 manage.py test --keepdb
+    volumes:
+      - ../../:/app
+    environment:
+      MODE_ENVIROMENT: test
