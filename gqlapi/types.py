@@ -1,3 +1,5 @@
+import graphene
+
 from django.contrib.auth import get_user_model
 from graphene_django.types import DjangoObjectType
 
@@ -15,3 +17,8 @@ class UserType(DjangoObjectType):
 class RecipeType(DjangoObjectType):
     class Meta:
         model = Recipe
+
+
+class RecipeDifficultyType(graphene.ObjectType):
+    name = graphene.String()
+    value = graphene.String()

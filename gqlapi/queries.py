@@ -2,7 +2,9 @@ import graphene
 
 from graphql_jwt.decorators import login_required
 
-from gqlapi.types import UserType, UserModel, Recipe, RecipeType
+from culinary.models import Recipe, RecipeDifficultyChoices
+from gqlapi.types import (
+    UserType, UserModel, RecipeType, RecipeDifficultyType)
 
 
 class UserQuery(graphene.ObjectType):
@@ -52,8 +54,18 @@ class RecipeQuery(graphene.ObjectType):
         if user_email is not None:
             return query.filter(user__email=user_email)
 
-        raise Exception("User id or user email are needed")
+        return query
 
 
-class RootQuery(UserQuery, RecipeQuery):
+class RecipeDifficultyQuery(graphene.ObjectType):
+    difficulties = graphene.List(RecipeDifficultyType)
+
+    def resolve_difficulties(self, info, **kwargs):
+        return [
+            RecipeDifficultyType(name=d.name, value=d.value)
+            for d in RecipeDifficultyChoices
+        ]
+
+
+class RootQuery(UserQuery, RecipeQuery, RecipeDifficultyQuery):
     pass
