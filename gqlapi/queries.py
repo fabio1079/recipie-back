@@ -13,7 +13,10 @@ class UserQuery(graphene.ObjectType):
         UserType,
         id=graphene.Int(),
         email=graphene.String())
-    users = graphene.List(UserType)
+
+    users = graphene.List(UserType,
+        first=graphene.Int(),
+        skip=graphene.Int())
 
     @login_required
     def resolve_me(self, info, **kwargs):
@@ -34,7 +37,18 @@ class UserQuery(graphene.ObjectType):
 
     @login_required
     def resolve_users(self, info, **kwargs):
-        return UserModel.objects.all()
+        first = kwargs.get('first', 10)
+        skip = kwargs.get('skip')
+
+        qs = UserModel.objects.all()
+
+        if skip:
+            qs = qs[skip::]
+
+        if first:
+            qs = qs[:first]
+
+        return qs
 
 
 class RecipeQuery(graphene.ObjectType):
